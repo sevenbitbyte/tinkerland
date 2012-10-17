@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>media/MDRC-Logo.png</file>
+    </qresource>
+</RCC>

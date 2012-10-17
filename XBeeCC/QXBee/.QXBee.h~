@@ -1,0 +1,124 @@
+#ifndef QXBEE_H
+#define QXBEE_H
+
+#include <QObject>
+#include <QtCore>
+#include "qextserialport/qextserialport.h"
+
+//API Packet IDs
+#define ID_ModemStatus  0x8A
+#define ID_AT_CMD       0x08
+#define ID_AT_QUEUE_PARAM   0x09
+#define ID_AT_CMD_RESPONSE  0x88
+#define ID_TX64_REQ     0x00
+#define ID_TX16_REQ     0x01
+#define ID_TX_STATUS    0x89
+#define ID_RX64_PACK    0x80
+#define ID_RX16_PACK    0x81
+
+#define BROADCAST_ADDR16    0xFFFF
+#define BROADCAST_ADDR64    0x000000000000FFFF
+#define DEFAULT_CMD_CHAR    '+'
+
+#define RETURN_CHAR 0x0D
+
+struct QXBeeAddr{
+    quint16 addr16;
+    quint32 addrL;
+    quint32 addrH;
+    quint16 panId;
+    bool isCoordinator;
+    quint8 channel;
+};
+
+struct QXBeePacket{
+    quint16 length;
+    quint8  checksum;
+    quint8  type;
+    QByteArray data;
+};
+
+class QXBee : public QObject{
+    Q_OBJECT
+    public:
+        //QXBee(QString port, QObject* parent);
+        QXBee(QString port, BaudRateType baud=BAUD9600, QObject* parent=NULL);
+        //QXBee(QString port, BaudRateType baud=BAUD9600, ParityType parity=PAR_NONE, QObject* parent=NULL);
+        ~QXBee();
+
+        enum RecvState{Idle, PacketStart, PacketLength, PacketType, PacketData,
+                   PacketChecksum, MessageStart};
+        enum CommMode{ErrorMode, TransparentMode, ATMode, APIMode};
+        enum ModemStatus{HardReset=0x0, WatchdogRest, Disassociated,
+                         SyncLost, CoordRealign, CoordStart};
+
+        CommMode getCommMode(){return currentMode;}
+
+        QString getPortName();
+
+        BaudRateType setBaudRate(BaudRateType baud=BAUD115200);
+
+        QByteArray readRegister(QString regName);
+
+        bool setRegister(QString regName, QByteArray value, bool allowCMDRegs=false);
+        /*
+        bool changeBaud(BaudRateType baud);
+        bool sendMsg(QString msg, QXBeeAddr addr,  bool waitForACK=true);
+
+        QString getVersionString();
+        QString getFrimwareVersion();
+        QString getHardwareVersion();
+        int getSignalStrength();
+        int getCCAFails();
+        int getACKFails();
+
+        void clearCCAFails();
+        void clearACKFails();*/
+
+    public slots:
+        void connectToXBee();
+
+    protected:
+        bool enterATMode();
+        bool exitATMode();
+        bool enterAPIMode();
+        bool exitAPIMode();
+        bool sendPacket(QXBeePacket pack);
+        bool waitMessage(int timeout=-1);
+        QByteArray readMessage(int timeoutSec, int timeoutMs=500, int innerDelay=500);
+        //CommMode setCommMode(CommMode mode);
+
+        //QByteArray sendCommand(QString cmd, QByteArray param, );
+
+    protected slots:
+
+        void readAPIPacket();
+        void parsePacket(QXBeePacket pack);
+
+    private slots:
+        void readMessage();
+
+    private:
+        QTimer* timer;
+        QXBeeAddr addr;
+        QMutex readMutex;
+        QextSerialPort *serPort;
+        CommMode currentMode;
+        RecvState recvState;
+        char commandChar;
+        quint16 gaurdTimeS;
+        quint16 gaurdTimeMs;
+        QByteArray currentMessage;
+        QByteArray currentString;
+        QXBeePacket currentPacket;
+        //ModemStatus currentModemStatus;
+
+    signals:
+        void packetReady(QXBeePacket pack);
+        void readMsg(QString msg);
+        void statusChanged(ModemStatus status);
+        void XBeeReady();
+        void XBeeError(QString errStr);
+};
+
+#endif

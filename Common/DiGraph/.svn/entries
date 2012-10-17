@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="956"
+   name=""
+   committed-date="2007-06-08T10:04:49.172097Z"
+   url="svn+ssh://nullagent@mdrc.rit.edu/home/svn/mdrc/IGVC/roboerc/control/DiGraph"
+   last-author="nullagent"
+   kind="dir"
+   uuid="2079531c-5a20-0410-bbd2-90737761e9cf"
+   repos="svn+ssh://nullagent@mdrc.rit.edu/home/svn/mdrc"
+   revision="982"/>
+<entry
+   committed-rev="956"
+   name="DiGraph.cpp"
+   text-time="2007-06-08T02:51:59.000000Z"
+   committed-date="2007-06-08T10:04:49.172097Z"
+   checksum="decdda865e73ceee78d5a9ef0afa71a2"
+   last-author="nullagent"
+   kind="file"/>
+<entry
+   committed-rev="945"
+   name="Vertex.h"
+   text-time="2007-06-07T11:15:02.000000Z"
+   committed-date="2007-06-07T10:35:44.374287Z"
+   checksum="ddf196b27c90bea408de154857a2f186"
+   last-author="nullagent"
+   kind="file"/>
+<entry
+   committed-rev="946"
+   name="DiGraph.h"
+   text-time="2007-06-07T12:07:06.000000Z"
+   committed-date="2007-06-07T11:35:51.272959Z"
+   checksum="1ce1c9e657a31f5c51d7058d0366f26b"
+   last-author="nullagent"
+   kind="file"/>
+<entry
+   committed-rev="944"
+   name="Edge.cpp"
+   text-time="2007-06-07T10:56:33.000000Z"
+   committed-date="2007-06-07T10:08:39.650512Z"
+   checksum="f8bae4f210bf2831158bd2139ea107d7"
+   last-author="nullagent"
+   kind="file"/>
+<entry
+   committed-rev="945"
+   name="Edge.h"
+   text-time="2007-06-07T11:20:55.000000Z"
+   committed-date="2007-06-07T10:35:44.374287Z"
+   checksum="470640476e2e702abaa371d64ba74a20"
+   last-author="nullagent"
+   kind="file"/>
+<entry
+   committed-rev="945"
+   name="Vertex.cpp"
+   text-time="2007-06-07T11:18:15.000000Z"
+   committed-date="2007-06-07T10:35:44.374287Z"
+   checksum="fb9e3414c5a5548fe16dda15db0f7512"
+   last-author="nullagent"
+   kind="file"/>
+</wc-entries>

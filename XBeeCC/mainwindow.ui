@@ -1,0 +1,316 @@
+<ui version="4.0" >
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>403</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>QXBee Command Center</string>
+  </property>
+  <widget class="QWidget" name="centralWidget" >
+   <layout class="QHBoxLayout" name="horizontalLayout" >
+    <item>
+     <widget class="QTabWidget" name="tabWidget" >
+      <property name="enabled" >
+       <bool>true</bool>
+      </property>
+      <property name="focusPolicy" >
+       <enum>Qt::TabFocus</enum>
+      </property>
+      <property name="currentIndex" >
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="manageTab" >
+       <attribute name="title" >
+        <string>Manage</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_4" >
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout" >
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2" >
+            <item>
+             <widget class="QLabel" name="deviceLabel" >
+              <property name="text" >
+               <string>Device:</string>
+              </property>
+              <property name="buddy" >
+               <cstring>deviceEdit</cstring>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="deviceEdit" >
+              <property name="focusPolicy" >
+               <enum>Qt::StrongFocus</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="baudLabel" >
+              <property name="text" >
+               <string>Baud Rate:</string>
+              </property>
+              <property name="buddy" >
+               <cstring>baudBox</cstring>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="baudBox" >
+              <property name="currentIndex" >
+               <number>3</number>
+              </property>
+              <item>
+               <property name="text" >
+                <string>1200 bps</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>2400 bps</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>4800 bps</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>9600 bps</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>19200 bps</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>38400 bps</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>57600 bps</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>115200 bps</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Auto Select</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="addButton" >
+              <property name="enabled" >
+               <bool>false</bool>
+              </property>
+              <property name="text" >
+               <string>Add</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="xbeeTable" >
+            <column>
+             <property name="text" >
+              <string>Serial Port</string>
+             </property>
+            </column>
+            <column>
+             <property name="text" >
+              <string>Status</string>
+             </property>
+            </column>
+            <column>
+             <property name="text" >
+              <string>Channel</string>
+             </property>
+            </column>
+            <column>
+             <property name="text" >
+              <string>Address64</string>
+             </property>
+            </column>
+            <column>
+             <property name="text" >
+              <string>Coordinator</string>
+             </property>
+            </column>
+            <column>
+             <property name="text" >
+              <string>PanID</string>
+             </property>
+            </column>
+            <column>
+             <property name="text" >
+              <string>Signal Strength</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3" >
+            <item>
+             <widget class="QPushButton" name="applyButton" >
+              <property name="text" >
+               <string>Apply</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer" >
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0" >
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="removeButton" >
+              <property name="text" >
+               <string>Remove</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="scanTab" >
+       <attribute name="title" >
+        <string>Scan</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="snoopTab" >
+       <attribute name="title" >
+        <string>Snoop</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout" >
+        <item row="0" column="0" >
+         <widget class="QTableWidget" name="tableWidget_2" >
+          <column>
+           <property name="text" >
+            <string>Source</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Pan</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Channel</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Data</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="destroyTab" >
+       <attribute name="title" >
+        <string>Destroy</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>600</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile" >
+    <property name="title" >
+     <string>File</string>
+    </property>
+    <addaction name="actionSave_Log" />
+    <addaction name="actionQuit" />
+   </widget>
+   <addaction name="menuFile" />
+  </widget>
+  <widget class="QStatusBar" name="statusBar" >
+   <property name="toolTip" >
+    <string/>
+   </property>
+   <property name="statusTip" >
+    <string/>
+   </property>
+   <property name="accessibleDescription" >
+    <string/>
+   </property>
+  </widget>
+  <action name="actionSave_Log" >
+   <property name="text" >
+    <string>Save Log</string>
+   </property>
+  </action>
+  <action name="actionQuit" >
+   <property name="text" >
+    <string>Quit</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <tabstops>
+  <tabstop>deviceEdit</tabstop>
+  <tabstop>baudBox</tabstop>
+  <tabstop>addButton</tabstop>
+  <tabstop>xbeeTable</tabstop>
+  <tabstop>applyButton</tabstop>
+  <tabstop>removeButton</tabstop>
+  <tabstop>tableWidget_2</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>deviceEdit</sender>
+   <signal>returnPressed()</signal>
+   <receiver>addButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>240</x>
+     <y>92</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>544</x>
+     <y>84</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

@@ -1,0 +1,38 @@
+
+[eightbitbyte@galactica Project1]$ time ./project1.py 0 0 > /dev/null
+
+real    0m0.082s
+user    0m0.063s
+sys     0m0.010s
+
+[eightbitbyte@galactica Project1]$ time ./project1.py 1 1 > /dev/null
+
+real    0m0.084s
+user    0m0.063s
+sys     0m0.017s
+
+[eightbitbyte@galactica Project1]$ time ./project1.py 2 2 > /dev/null
+
+real    0m0.144s
+user    0m0.077s
+sys     0m0.023s
+
+[eightbitbyte@galactica Project1]$ time ./project1.py 3 3 > /dev/null
+
+real    0m0.490s
+user    0m0.447s
+sys     0m0.010s
+
+[eightbitbyte@galactica Project1]$ time ./project1.py 4 4 > /dev/null
+
+real    0m5.552s
+user    0m5.066s
+sys     0m0.030s
+
+
+[eightbitbyte@galactica Project1]$ time ./project1.py 5 5 > /dev/null
+
+real    1m10.361s
+user    1m4.752s
+sys     0m0.067s
+

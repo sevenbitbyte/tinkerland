@@ -1,0 +1,318 @@
+#include "QXBee.h"
+//#include <string.h>
+
+
+QXBee::QXBee(QString port, BaudRateType baud, QObject* parent):QObject(parent){
+    qWarning("QXBee - %s", port.toAscii().data());
+    serPort=new QextSerialPort("/dev/ttyUSB0");
+    serPort->setBaudRate(baud);
+    serPort->setFlowControl(FLOW_OFF);
+    serPort->setParity(PAR_NONE);
+    serPort->setDataBits(DATA_8);
+    serPort->setStopBits(STOP_2);
+
+    currentMode=TransparentMode;
+    commandChar=DEFAULT_CMD_CHAR;
+    gaurdTimeS=3;
+    gaurdTimeMs=1000;
+    recvState=Idle;
+
+    connect(serPort, SIGNAL(readyRead()), this, SLOT(readMsg()));
+
+    timer=new QTimer(this);
+    timer->singleShot(100, this, SLOT(connectToXBee()));
+}
+
+QXBee::~QXBee(){
+    qWarning("QXBee - Destroyed");
+    if(serPort->isOpen()){
+        serPort->close();
+    }
+    delete serPort;
+    delete timer;
+}
+
+void QXBee::connectToXBee(){
+    serPort->open(QIODevice::ReadWrite);
+    qDebug("QXBee open: %d", serPort->isOpen());
+    if(!serPort->isOpen()){
+        currentMode=ErrorMode;
+        emit XBeeError("Could not open serial port");
+    }
+    else if(enterAPIMode()){
+        emit XBeeReady();
+    }
+}
+
+QString QXBee::getPortName(){
+    return serPort->portName();
+}
+
+BaudRateType QXBee::setBaudRate(BaudRateType baud){
+    //
+}
+
+bool QXBee::enterATMode(){
+    qWarning("QXBee - enterATMode");
+    if(currentMode==ATMode){
+        return true;
+    }
+    else if(currentMode==APIMode){
+        if(!exitAPIMode()){
+            //emit XBeeError("Could not enter AT mode");
+            return false;
+        }
+    }
+    else if(currentMode==TransparentMode){
+        QString cmdChars(commandChar);
+        cmdChars.append(commandChar);
+        cmdChars.append(commandChar);
+        serPort->write(cmdChars.toAscii(), cmdChars.length());
+        serPort->flush();
+        if(waitMessage(gaurdTimeS*1000+gaurdTimeMs)){
+            char successStr[]={'O', 'K', RETURN_CHAR};
+            if(strncmp(successStr,currentMessage.data(),3)==0){
+                currentMode=ATMode;
+                return true;
+            }
+            else{
+                qWarning("Failed compare on length %i",currentMessage.size());
+            }
+        }
+        /*QByteArray recv=readMessage(gaurdTimeS+2, gaurdTimeMs);
+        int tries=1;
+        while(recv.size()==0){
+            qDebug("Retry %i", tries);
+            recv=readMessage(gaurdTimeS, gaurdTimeMs);
+            tries++;
+        }
+        if(recv.contains("OK")){
+            currentMode=ATMode;
+            return false;
+        }*/
+        /*serPort->setTimeout(gaurdTimeS, gaurdTimeMs);
+        for(int i=0; i<3; i++){
+            qWarning("Bytes avail try %i",i);
+            int bytes=serPort->bytesAvailable();
+            if(bytes >= 3){
+                char buf[3];
+                char seq[]={'O', 'K', RETURN_CHAR};
+                serPort->read(buf, 3);
+                if(strncmp(buf, seq, 3)==0){
+                    currentMode=ATMode;
+                    return true;
+                }
+            }
+        }*/
+        emit XBeeError("Could not enter AT mode");
+        return false;
+    }
+    return false;
+}
+
+bool QXBee::enterAPIMode(){
+    if(currentMode!=ATMode){
+        if(!enterATMode()){
+            qWarning("QXBee - enterATMode Failed!");
+            return false;
+        }
+    }
+    qWarning("QXBee - enterATMode Success");
+    QByteArray param=QByteArray::fromHex("0x1");
+    if(setRegister("AP", param, true)){
+        qWarning("QXBee - enterAPIMode Success");
+        currentMode=APIMode;
+        return true;
+    }
+    qWarning("QXBee - enterAPIMode Failed");
+    return false;
+}
+
+bool QXBee::exitAPIMode(){}
+
+bool QXBee::exitATMode(){}
+
+bool QXBee::sendPacket(QXBeePacket pack){
+    if(currentMode==APIMode && serPort->isOpen()){
+        pack.length=pack.data.length()+1;
+        pack.checksum=pack.type;
+        for(int i=0; i<pack.length-1; i++){
+            pack.checksum+=pack.data.data()[i];
+        }
+        pack.checksum=0xFF - pack.checksum;
+
+        char stx=0x7E;
+        int writeCount=serPort->write(&stx, 1);
+        writeCount+=serPort->write((char*)&pack.length, 2);
+        writeCount+=serPort->write((char*)&pack.type, 1);
+        writeCount+=serPort->write(pack.data);
+        writeCount+=serPort->write((char*)pack.checksum, 1);
+        if(writeCount==pack.data.length()+5){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool QXBee::waitMessage(int timeout){
+    if(readMutex.tryLock()){
+        qWarning("QXBee waitMessage(%i) locked readMutex", timeout);
+        //return readMutex.tryLock(timeout);
+    }
+    qWarning("Did not lock Mutex!");
+    return false;
+}
+
+void QXBee::readMsg(){
+    if(readMutex.tryLock()){
+        qDebug("ERROR readMessage() - Can get readMutex!!!!");
+    }
+    int numBytes=serPort->bytesAvailable();
+    qWarning("ReadMessage called, %i bytes available", numBytes);
+    if(numBytes<0){return;}
+    if(recvState==Idle){
+        currentMessage.clear();
+        currentString.clear();
+        currentPacket=QXBeePacket();
+    }
+    //if(currentMode==ATMode){
+        char buf[numBytes];
+        int readBytes=serPort->read(buf, numBytes);
+        currentMessage.append(QByteArray::fromRawData(buf,readBytes));
+        if(currentMessage.size() > 0){
+            if(currentMessage.at(currentMessage.size()-1) == RETURN_CHAR){
+                readMutex.unlock();
+                recvState=Idle;
+            }
+            else{
+                recvState=MessageStart;
+            }
+        }
+        else{
+            qDebug("readMessage() - Did not read anything!");
+        }
+    //}
+}
+
+void QXBee::readAPIPacket(){
+    if(recvState==Idle){
+        if(currentMode==APIMode){
+
+        }
+    }
+}
+
+void QXBee::parsePacket(QXBeePacket pack){
+
+}
+
+QByteArray QXBee::readMessage(int timeoutSec, int timeoutMs, int innerDelay){
+    qWarning("ReadMessage called!");
+    QByteArray retVal;
+    return retVal;
+    /*
+    if(serPort->isOpen()){
+        //serPort->setTimeout(timeoutSec, timeoutMs);
+        qint64 availCount=serPort->bytesAvailable();
+        if(availCount<1){availCount=serPort->bytesAvailable();}
+        qint64 readCount=0;
+        char *buf;
+        qDebug("Has %i bytes in buffer %i size %i", availCount, serPort->lastError(), serPort->size());
+        //serPort->setTimeout(1, innerDelay);
+        while(availCount>0){
+            buf=new char[availCount];
+            //QByteArray buffer=serPort->readAll();
+            readCount=serPort->read(buf, availCount);
+            if(readCount<=0){
+            //if(buffer.size() <=0){
+                //availCount=serPort->bytesAvailable();
+                qDebug("Read nothing, available now %i", availCount);
+                continue;
+            }
+            qDebug("2 Read %i", readCount);
+            retVal.append(QByteArray::fromRawData(buf, readCount));
+            //qDebug("2 Read %i", buffer.size());
+            //retVal.append(buffer);
+            delete[] buf;
+            qDebug("4 - %i", retVal.size());
+            if(retVal.at(retVal.size()-1) == RETURN_CHAR){
+                qDebug("5");
+                break;
+            }
+            availCount=serPort->bytesAvailable();
+            if(availCount<1){
+                qDebug("Avail=%i size=%i", availCount,serPort->size());
+                availCount=serPort->size();
+                continue;
+            }
+            qDebug("Has %i bytes available", availCount);
+        }
+    }
+    qDebug("readMessage - Read %i bytes", retVal.size());
+    return retVal;*/
+}
+
+bool QXBee::setRegister(QString regName, QByteArray value, bool allowCMDRegs){
+    if(!allowCMDRegs){
+        //Check regName against allowed list
+    }
+    if(currentMode==ATMode){
+        QString cmd("AT");
+        cmd.append(regName);
+        cmd.append(value.toHex());
+        cmd.append(RETURN_CHAR);
+        serPort->write(cmd.toAscii(), cmd.length());
+        serPort->flush();
+        qWarning("setRegister(%s%s)", regName.toAscii().data(), QString(value.toHex()).toAscii().data());
+        QByteArray recv;//readMessage(gaurdTimeS+2, gaurdTimeMs);
+        int tries=0;
+        while(recv.size()==0){
+            qDebug("Retry %i", tries);
+            recv=readMessage(0, gaurdTimeMs);
+            tries++;
+        }
+        char successStr[]={'O', 'K', RETURN_CHAR};
+        if(strncmp(successStr,recv.data(),3)==0){
+            return true;
+        }
+        /*serPort->setTimeout(gaurdTimeS, gaurdTimeMs);
+        for(int i=0; i<5; i++){
+            int bytes=serPort->bytesAvailable();
+            qWarning("Listening %i - Bytes = %i", i, bytes);
+            if(bytes >= 2){
+                char buf[4];
+                char seq[]={'O', 'K', RETURN_CHAR};
+                serPort->read(buf, 3);
+                if(strncmp(buf, seq, 3)==0){
+                    return true;
+                }
+                buf[3]=0;
+                qWarning("Read[%s]", buf);
+                return false;
+            }
+        }*/
+        return false;
+    }
+    else if(currentMode==APIMode){
+        QXBeePacket pack;
+        pack.data=value;
+        pack.type=ID_AT_CMD;
+        return sendPacket(pack);
+    }
+    else if(currentMode==TransparentMode){
+        if(enterATMode()){
+            if(setRegister(regName, value, allowCMDRegs)){
+                exitATMode();
+                return true;
+            }
+            exitATMode();
+            return false;
+        }
+        return false;
+    }
+    return false;
+}
+
+QByteArray QXBee::readRegister(QString regName){
+    //
+}

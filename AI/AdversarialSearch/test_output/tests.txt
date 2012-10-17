@@ -1,0 +1,2 @@
+Max should win
+./project1Limited.py -l 1 -1 2 -2 6 -7 7 -7 10

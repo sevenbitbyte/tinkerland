@@ -1,0 +1,78 @@
+<title>AI (undergrad) Project #1</title>
+<center>
+<h2>AI (undergrad) Project #1: All The King's Horses</h2>
+<h4>Due: January 17, 2011, 11:59 PM</h4>
+</center>
+
+In this project, you will write a program to play a game called
+"All The King's Horses".  A number of versions of this game are
+described in Conway's "On Numbers and Games", but we will play
+one specific version not described exactly there.  
+<p>
+In this two-player game, each player has control of two chess
+knights on a chessboard (which can be of any size).  On your turn,
+you must move one of your knights toward the upper-left corner of
+the board.  In general, this means that four moves are available:
+<p>
+<center><img width=300 src="knightmoves.png"></center>
+<p>
+ Of course, if a knight is near the top or left of the board, fewer
+moves will be possible, and a knight in the upper left 2x2 area cannot
+move at all.  For this reason, the board can be considered to extend
+infinitely far down and to the right without the state space becoming
+infinitely large.  In addition, a knight is not allowed to move to a
+square occupied by another knight (of either color).  You lose the
+game if you are unable to make a move.  As such, this game has no
+draws.
+<p>
+For this project, you will write code in Lisp, Scheme or Python that
+determines optimal moves for this game (in the minimax sense).  At a
+minimum, you must produce a function <code>best-move</code> that takes
+in a game representation (in some reasonable format) including which
+player is to move, and returns the best possible next position after
+that player's move.  You must also include a
+function <code>play</code> that takes in a game representation and
+plays out a whole game using your <code>best-move</code> function.<p>
+In addition, you should write a depth-limited version
+of <code>best-move</code> (call this <code>best-move-limited</code>)
+that uses an evaluation function when the depth limit is reached.
+This function should take a search depth and an evaluation function
+as parameters in addition to the game state and player to move.
+This will require writing a simple evaluation function as well,
+anything reasonable is fine.
+<p>
+You must also include a writeup that describes your representation and
+how your successor functions work.  You will not be graded explicitly on
+this writeup, but it must be clear enough for me to appropriately grade
+your code on efficiency and correctness.  Included in this, you must show
+how to call <code>best-move</code> for the following game state with
+black to move (and also for the same state with white to move):<p>
+
+<center><img width=300 src="knightboard.png"></center>
+<p>
+To submit your project, use the <code>submit</code> command on the
+CS Unix machines, as follows:
+<pre>
+   submit zjb-grd proj1-ugrad <i>filename(s)</i>
+</pre>
+Note that <code>submit</code> will accept any filename(s) and does
+no testing - and if your files are
+successfully submitted, <code>submit</code> will not say anything!
+Also, each submission completely overwrites any previous submission,
+so if you choose to resubmit (which is fine), make sure to submit
+all your files each time.
+<p>
+For implementation purposes, note that I will test your code on a 
+CS Solaris machine, as follows: Lisp in <code>clisp</code>, Scheme
+in <code>mzscheme</code> and Python in Python 3.1 (<code>python3</code>).
+There should be little to no platform dependencies on anything we
+do here, but make sure to try it on the CS installation just in case!
+<p>
+Your project grade will be assigned as follows:
+<ul>
+<li>Correctness and completeness of successor operations: 30%
+<li>Correctness and completeness of exhaustive search procedure: 40%
+<li>Correctness and completeness of limited-depth search (including
+evaluation function): 15%
+<li>Efficiency and clarity of code (especially state representation): 15%
+</ul>

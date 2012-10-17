@@ -1,0 +1,63 @@
+Project2
+Alan Meekins <alm2220@rit.edu>
+
+NOTE:
+	My program is VERY unhappy in the Sun Machines, but runs just fine the
+the Ubuntu machines. I'm not exactly sure what the problem is on the Suns but
+it does preform as expected in the state themed lab.
+
+
+Design:
+
+I decided to implement this project in C++ because of comfort with the
+language. There are three important classes which take care of data manipulation
+file parsing and interfacing with the generic neural network implementation.
+My aim was to make the back propagtion code as reusable as possible to facilite
+further expirementation.
+
+neuron.h/.cpp
+	In this file is the bulk of the neural network implementation. This includes
+everything necissary to train a network as well as to functions for saving and
+loading a trained net. This implementation is designed to allow the construction
+of feed-forward networks with an arbitrary number of hidden layers.
+
+dataset.h/.cpp
+	This file contains data parsing routines specific to the elections and
+demographics data sets. It can make use of all of the data files for defining
+columns to allow for more flexibility in selecting input variables. Also, when
+the DataDict.txt file is loaded, scaling factors are computer using the min and
+max values such that all fields will be scaled between -1.0 and +1.0. I decided
+not to scale percent values however.
+
+electionDataSource.h/.cpp
+	Implements the IDataSource interface defined in neuron.h to keep the data
+formatting details out of the neural network implementation.
+
+Training
+	I expiremented with varing numbers of hidden layers as well as different
+numbers of nodes in each layer. I finally setteled on network with a single
+hidden layer of 30 nodes. My network uses 16 inputs, focusing on the age,
+ethnicity, and change in population density variables. I tried using measures
+of population density and government spending in the given region but this
+resulted in less accurate predictions.
+
+
+Programs
+
+logic_test
+	This program learns a couple of logic gates and proves that back propagation
+is working.
+
+NeuralNetworkTool (nntool)
+	This program is used to train a network. Currently the locations of input
+files are hard coded :(
+
+predict
+	This program takes in an demographics datafile as the first argument and the
+name of a neural network save file. It will use the neural network to predict
+the winner in all of the counties present in the datafile and will also compare
+the predictions against the actual results followed by a report on the error
+rate. Both arguments are optional, the program will default to loading a net
+at a hard coded file location against the entire dataset.
+
+

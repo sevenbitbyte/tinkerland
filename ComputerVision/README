@@ -1,0 +1,32 @@
+Description:
+	Contained in this folder are practice programs I have created to better learn OpenCV
+	and expand my knowledge of computer vision.
+
+
+
+glcm.cpp
+	This program constructs a Grey Level Co-Occurance matrix for an image and produces
+	some statistics helpful in classifying objects. The program allows the user to
+	explore an image by selecting regions to analyize and updating the GLCM and
+	statistics as the user moves their mouse through the image.
+
+	Key Actions:
+		p	Pauses a video stream(Video not yet supported)
+		r	Resets the region of interest
+		s	Starts frame step mode for videos
+		q	Quits
+
+	Mouse Bindings:
+		LButton	Click and drag to select a region of interest
+		RButton Click and drag to move the region of interest
+
+glcm-slow.cpp
+	This program demonstrates how slow the library routines are for accessing an image's
+	pixels directly. After noticing the speed improvment from hard coding an access routine
+	for the specific type of IplImage needed it seems it would be best to write/use type
+	specific access functions to boost performance in production.
+
+motion.c
+	This program simply displays the changed areas in an image due to motion. This is
+	accomplished by differencing the current frame from the average of the past frames
+	leaving only pixels that have changed.

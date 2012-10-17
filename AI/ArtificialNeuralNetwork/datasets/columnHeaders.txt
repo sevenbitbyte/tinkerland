@@ -1,0 +1,1 @@
+ State, County, FIPS, Percent-of-votes-counted, Total-votes, Obama-votes, McCain-votes, Minor-party-1-votes, Minor-party-2-votes, Obama-percent, McCain-percent

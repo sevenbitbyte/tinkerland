@@ -1,0 +1,29 @@
+PST120209 Resident total population estimate, percent change - April 1, 2000 to July 1, 2009                      PCT    1          9.1       -43.5        92.1  CENSUS
+AGE135209 Resident population under 5 years, percent (July 1 - estimate) 2009                                     PCT    1          6.9         0.0        13.8  CENSUS
+AGE295209 Resident population under 18 years, percent (July 1 - estimate) 2009                                    PCT    1         24.3         0.0        40.5  CENSUS
+AGE775209 Resident population 65 years and over, percent (July 1 - estimate) 2009                                 PCT    1         12.9         0.0        37.2  CENSUS
+SEX255209 Resident population: total females, percent (July 1 - estimate) 2009                                    PCT    1         50.7        25.1        58.0  CENSUS
+RHI125209 Resident population: White alone, percent (July 1 - estimate) 2009                                      PCT    1         79.6         6.2       100.0  CENSUS
+RHI225209 Resident population: Black alone, percent (July 1 - estimate) 2009                                      PCT    1         12.9         0.0        86.3  CENSUS
+RHI325209 Resident population: American Indian and Alaska Native alone, percent (July 1 - estimate) 2009          PCT    1          1.0         0.0        90.7  CENSUS
+RHI425209 Resident population: Asian alone, percent (July 1 - estimate) 2009                                      PCT    1          4.6         0.0        43.9  CENSUS
+RHI525209 Resident population: Native Hawaiian and Other Pacific Islander alone, percent (July 1 - estimate) 2009 PCT    1          0.2         0.0        44.6  CENSUS
+RHI625209 Resident population: Two or more races, percent (July 1 - estimate) 2009                                PCT    1          1.7         0.0        25.0  CENSUS
+RHI725209 Resident population: Hispanic or Latino Origin, percent (July 1 - estimate) 2009                        PCT    1         15.8         0.1        97.2  CENSUS
+RHI825209 Resident population: Not Hispanic, White alone, percent (July 1 - estimate) 2009                        PCT    1         65.1         2.1        99.4  CENSUS
+EDU635200 Educational attainment - persons 25 years and over - percent high school graduate or higher 2000        PCT    1         80.4        34.7        97.0  CENSUS
+EDU685200 Educational attainment - persons 25 years and over - percent bachelor's degree or higher 2000           PCT    1         24.4         4.9        63.7  CENSUS
+IPE120208 People of all ages in poverty - percent 2008                                                            PCT    1         13.2         0.0        54.4  CENSUS
+
+
+
+PST045209 Resident total population estimate (July 1) 2009                                                        ABS    0    307006550          45   307006550  CENSUS
+POP905200 Civilian noninstitutionalized population, 5 years and over, with a disability 2000 (sample)             ABS    0     49746248          22    49746248  CENSUS
+LFE305200 Average travel time to work for workers 16 years and over not working at home 2000                      MIN    1         25.5        48.7         7.0  CENSUS
+PEN020207 Per capita personal income 2007                                                                         DOL    0        38615           0      132728  BEA
+EMN012207 Employment in all industries, net change 2000 - 2007                                                    ABS    0     14185000     -174885    14185000  BEA
+AGN050207 Land in farms (NAICS) 2007 (acres) (adjusted)                                                           ACR    0    922095840           0   938279056  NASS
+FED110208 Federal Government expenditure - total FY 2008                                                          TH$    0   2771782152      -10611  2771782152  CENSUS
+FED112208 Federal Government expenditure per capita FY 2008                                                       DOL    0         9116        -937     1809988  CENSUS
+LND110200 Land area in square miles 2000                                                                          SQM    2   3537438.44        1.99  3537438.44  CENSUS
+POP060200 Population per square mile 2000                                                                         RTE    1         79.6         0.0     66834.6  CENSUS
