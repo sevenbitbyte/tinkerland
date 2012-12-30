@@ -2,6 +2,6 @@ Not all credit goes to sevenbitbyte
 
 Authors:
 
-Stef Milstead
-Myles C. Maxfield
-Alan Meekins
+*Myles C. Maxfield
+*Stef Milstead
+*Alan Meekins
