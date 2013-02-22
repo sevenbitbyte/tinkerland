@@ -14,6 +14,13 @@ warnings) in the project.  Note that _TTY_NOWARN_ will also turn off portability
 #include <stdio.h>
 #include "posix_qextserialport.h"
 
+#include<QtCore>
+#include <signal.h>
+
+void sighupHandler(int signal){
+	//qDebug() << "INFO: Received signal " << signal;
+}
+
 /*!
 \fn Posix_QextSerialPort::Posix_QextSerialPort()
 Default constructor.  Note that the name of the device used by a QextSerialPort constructed with
@@ -40,6 +47,8 @@ See the other constructors if you need to open a different port.
 Posix_QextSerialPort::Posix_QextSerialPort()
 : QextSerialBase()
 {
+	signal(SIGHUP, SIG_IGN);
+
     Posix_File=new QFile();
     Read_Notifier=NULL;
 }
@@ -51,6 +60,8 @@ Copy constructor.
 Posix_QextSerialPort::Posix_QextSerialPort(const Posix_QextSerialPort& s)
  : QextSerialBase(s.port)
 {
+	signal(SIGHUP, SIG_IGN);
+
 	Read_Notifier=NULL;
 	setOpenMode(s.openMode());
     port = s.port;
@@ -77,6 +88,8 @@ e.g."COM1" or "/dev/ttyS0".
 Posix_QextSerialPort::Posix_QextSerialPort(const QString & name)
  : QextSerialBase(name)
 {
+	signal(SIGHUP, SIG_IGN);
+
     Posix_File=new QFile();
     Read_Notifier=NULL;
     setTimeout(0, 0);
@@ -89,6 +102,8 @@ Constructs a port with default name and specified settings.
 Posix_QextSerialPort::Posix_QextSerialPort(const PortSettings& settings)
  : QextSerialBase()
 {
+	signal(SIGHUP, SIG_IGN);
+
     setBaudRate(settings.BaudRate);
     setDataBits(settings.DataBits);
     setParity(settings.Parity);
@@ -107,6 +122,8 @@ Constructs a port with specified name and settings.
 Posix_QextSerialPort::Posix_QextSerialPort(const QString & name, const PortSettings& settings)
  : QextSerialBase(name)
 {
+	signal(SIGHUP, SIG_IGN);
+
     setBaudRate(settings.BaudRate);
     setDataBits(settings.DataBits);
     setParity(settings.Parity);
@@ -1140,7 +1157,7 @@ qint64 Posix_QextSerialPort::writeData(const char * data, qint64 maxSize)
 }
 
 void Posix_QextSerialPort::emitReadyRead(){
-        qDebug("emit readyRead()");
-        Read_Notifier->setEnabled(true);
+	//qDebug("emit readyRead()");
+	Read_Notifier->setEnabled(true);
 	emit readyRead();
 }
