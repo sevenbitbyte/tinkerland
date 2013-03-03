@@ -21,7 +21,7 @@ INCLUDEPATH += ../../lib
 
 FORMS    += forms/mainwindow.ui
 
-LIBS += ../../libicp/debug/libicp.a
+LIBS += ../../libicp/libicp.a
 
 RESOURCES += \
     resources.qrc
