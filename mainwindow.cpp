@@ -228,8 +228,16 @@ void MainWindow::systemStatusSlot(SystemStatusPacket status){
 	}
 
 
-	if(ui->accelAutoRotateCheck->isChecked()){
+	if(ui->accelAutoRotateCheck->isChecked() && ui->accelOrientationCombo->currentIndex() != status.orientation){
+
 		ui->accelOrientationCombo->setCurrentIndex(status.orientation);
+
+		QString command = "xrandr -o ";
+		QTextStream cmdStream(&command);
+
+		cmdStream << status.orientation;
+
+		system(command.toAscii().constData());
 	}
 }
 
