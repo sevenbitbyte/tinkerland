@@ -1,28 +1,5 @@
 cmake_minimum_required(VERSION 2.8.8)
 
-#project(MonitorRotate)
-
-# Find includes in corresponding build directories
-#set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-#set(CMAKE_AUTOMOC ON)
-
-#find_package(Qt5Core)
-#find_package(Qt5Gui)
-
-#INCLUDE(${QT_USE_FILE})
-#ADD_DEFINITIONS(${QT_DEFINITIONS})
-
-#add_subdirectory (qextserialport)
-#include_directories( ${MonitorRotate_SOURCE_DIR}/qextserialport )
-
-#add_executable(QMonitorRotate main.cpp mainwindow.cpp serialdevice.cpp qextserialport/qextserialbase.cpp qextserialport/posix_qextserialport.cpp qextserialport/qextserialport.cpp ${UIS_HDRS})
-
-#qt5_use_modules(QMonitorRotate Core Widgets)
-#QT5_WRAP_UI(UIS_HDRS mainwindow.ui)
-#qt5_wrap_ui(ui_mainwindow.h mainwindow.ui)
-
-
 #cmake_minimum_required(VERSION 2.8)
 if(CMAKE_BUILD_TYPE STREQUAL Release)
   SET(CMAKE_BUILD_TYPE Release)
@@ -60,17 +37,13 @@ SET(SRC
     serialdevice.cpp
   )
 
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+set(EXECUTABLE_OUTPUT_PATH bin)
+set(LIBRARY_OUTPUT_PATH lib)
 
 FIND_PROGRAM(QT_UIC_EXECUTABLE uic
   $ENV{QTDIR}/bin
-  )
+)
 
-#IF (QT_UIC_EXECUTABLE)
-  # SET ( QT_WRAP_UI "YES")
-  #message("WOW")
-#ENDIF (QT_UIC_EXECUTABLE)
 
 #QT5_WRAP_UI(ui_mainwindow.h mainwindow.ui -o ui_mainwindow.h)
 
@@ -81,7 +54,6 @@ include_directories(
   ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS}
 )
 
-# set_target_properties(${PROJECT_NAME} PROPERTIES SOVERSION ${perception_kit_VERSION} )
 add_executable(QMonitorRotate ${SRC} ${UIS_HDRS})
 #target_link_libraries(${PROJECT_NAME} )
 
