@@ -237,7 +237,7 @@ void MainWindow::systemStatusSlot(SystemStatusPacket status){
 
 		cmdStream << status.orientation;
 
-		system(command.toAscii().constData());
+        system(command.toLatin1().constData());
 	}
 }
 

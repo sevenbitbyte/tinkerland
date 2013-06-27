@@ -3,14 +3,14 @@
 #define _QEXTSERIALPORT_H_
 
 /*POSIX CODE*/
-#ifdef _TTY_POSIX_
+#ifdef __linux__
 #include "posix_qextserialport.h"
 #define QextBaseType Posix_QextSerialPort
 
 /*MS WINDOWS CODE*/
 #else
-#include "win_qextserialport.h"
-#define QextBaseType Win_QextSerialPort
+//#include "win_qextserialport.h"
+//#define QextBaseType Win_QextSerialPort
 #endif
 
 class QextSerialPort: public QextBaseType {
